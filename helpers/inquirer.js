@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const { validate } = require('uuid');
 require('colors');
 
 const menuOptions = [
@@ -25,7 +26,7 @@ const menuOptions = [
             },
             {
                 value: '5',
-                name: '5. Completar tareas'
+                name: '5. Completar tarea(s)'
             },
             {
                 value: '6',
@@ -67,7 +68,29 @@ const pausa = async () => {
     return value;
 }
 
+
+const leerImput = async (mensaje) => {
+    const question  =  [
+        {
+            type: 'input',
+            name: 'description',
+            mensaje,
+            validate (value) {
+                if(value.length === 0){
+                    return 'por facor ingreso un valor'
+                }
+                return true;
+            }
+        }
+    ];
+
+    const { descripcion } = await inquirer.prompt(question);
+
+    return descripcion;
+}
+
 module.exports = {
     inquirerMenu,
     pausa,
+    leerImput,
 }
