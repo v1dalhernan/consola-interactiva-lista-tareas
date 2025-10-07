@@ -1,3 +1,4 @@
+const { guardarDB, leerDb } = require('./helpers/guardarArchivo');
 const { inquirerMenu, pausa, leerImput } = require('./helpers/inquirer');
 const Tareas = require('./models/tareas');
 
@@ -8,7 +9,8 @@ require('colors');
 
 const main = async () => {
     let opt = '';
-    const tareas = new Tareas();
+    const infoBaseDeDatos = leerDb();
+    const tareas = new Tareas(infoBaseDeDatos? infoBaseDeDatos: []);
 
     do {
         opt = await inquirerMenu();
@@ -23,16 +25,18 @@ const main = async () => {
 
             // listar tareas
             case '2':
-                console.log(tareas._listado);
+                tareas.listadoCompleto();
                 break;
             
             // listar tareas completadas
             case '3':
+                tareas.listarTareasConFiltro(true);
 
                 break;
 
             // listar tareas pendientes 
             case '4':
+                tareas.listarTareasConFiltro(false);
 
                 break;
             
@@ -51,6 +55,8 @@ const main = async () => {
             break;
             
         }
+
+        guardarDB(tareas.listadoArr);
 
 
 
