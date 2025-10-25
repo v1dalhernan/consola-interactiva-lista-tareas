@@ -1,5 +1,4 @@
 const inquirer = require('inquirer');
-const { validate } = require('uuid');
 require('colors');
 
 const menuOptions = [
